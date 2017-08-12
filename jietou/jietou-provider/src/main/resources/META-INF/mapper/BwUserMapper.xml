@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jietou.provider.mapper.BwUserMapper">
+	<resultMap id="BaseResultMap" type="org.jietou.api.m.BwUser">
+		<id column="ROW_ID" property="ROW_ID" jdbcType="INTEGER" />
+		<result column="ACCOUNT" property="ACCOUNT" jdbcType="VARCHAR" />
+		<result column="USER_NAME" property="USER_NAME" jdbcType="VARCHAR" />
+		<result column="E_MAIL" property="e_MAIL" jdbcType="VARCHAR" />
+		<result column="USER_ID" property="USER_ID" jdbcType="VARCHAR" />
+		<result column="PHONE" property="PHONE" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="PASSWORD" jdbcType="VARCHAR" />
+		<result column="OPERATION_MANAGER" property="OPERATION_MANAGER"
+			jdbcType="VARCHAR" />
+		<result column="IDENTITY" property="IDENTITY" jdbcType="VARCHAR" />
+		<result column="DEL_FLAG" property="DEL_FLAG" jdbcType="CHAR" />
+		<result column="CREATED_DATE" property="CREATED_DATE" jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="CREATED_BY" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ROW_ID, ACCOUNT, USER_NAME, E_MAIL, USER_ID, PHONE,
+		PASSWORD,
+		OPERATION_MANAGER,
+		IDENTITY, DEL_FLAG, CREATED_DATE,
+		CREATED_BY
+	</sql>
+	<sql id="ColumnList">
+		ROW_ID,ACCOUNT, USER_NAME, USER_ID, IDENTITY
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from bw_user
+		where ROW_ID = #{ROW_ID,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByUser" resultMap="BaseResultMap"
+		parameterType="org.jietou.api.m.BwUser">
+		select
+		<include refid="Base_Column_List" />
+		from bw_user
+		where ACCOUNT = #{ACCOUNT,jdbcType=VARCHAR}
+		AND PASSWORD =
+		#{PASSWORD,jdbcType=VARCHAR}
+	</select>
+	<select id="getALLUsers" resultMap="BaseResultMap"
+		parameterType="map">
+		select
+		<include refid="ColumnList" />
+		from bw_user where DEL_FLAG = 0
+		<if test="ROW_ID != null">
+			AND ROW_ID = #{ROW_ID,jdbcType=INTEGER}
+		</if>
+		<if test="ACCOUNT != null">
+			AND ACCOUNT = #{ACCOUNT,jdbcType=VARCHAR}
+		</if>
+		<if test="USER_NAME != null">
+			AND USER_NAME = #{USER_NAME,jdbcType=VARCHAR}
+		</if>
+		<if test="USER_ID !=null">
+			AND USER_ID = #{USER_ID,jdbcType=VARCHAR}
+		</if>
+		<if test="IDENTITY !=null">
+			AND IDENTITY = #{IDENTITY,jdbcType=VARCHAR}
+		</if>
+		ORDER BY ROW_ID DESC
+		limit #{page},#{rows}
+	</select>
+
+	<select id="getALLUserscount" resultType="java.lang.Integer">
+		select count(0)
+		from bw_user where DEL_FLAG = 0
+		<if test="ROW_ID != null">
+			AND ROW_ID = #{ROW_ID,jdbcType=INTEGER}
+		</if>
+		<if test="ACCOUNT != null">
+			AND ACCOUNT = #{ACCOUNT,jdbcType=VARCHAR}
+		</if>
+		<if test="USER_NAME != null">
+			AND USER_NAME = #{USER_NAME,jdbcType=VARCHAR}
+		</if>
+		<if test="USER_ID !=null">
+			AND USER_ID = #{USER_ID,jdbcType=VARCHAR}
+		</if>
+		<if test="IDENTITY !=null">
+			AND IDENTITY = #{IDENTITY,jdbcType=VARCHAR}
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		bw_user
+		where ROW_ID = #{ROW_ID,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="org.jietou.api.m.BwUser">
+		insert into bw_user (ROW_ID,
+		ACCOUNT, USER_NAME,
+		E_MAIL, USER_ID, PHONE,
+		PASSWORD, OPERATION_MANAGER,
+		IDENTITY,
+		DEL_FLAG, CREATED_DATE, CREATED_BY
+		)
+		values
+		(#{ROW_ID,jdbcType=INTEGER}, #{ACCOUNT,jdbcType=VARCHAR},
+		#{USER_NAME,jdbcType=VARCHAR},
+		#{e_MAIL,jdbcType=VARCHAR},
+		#{USER_ID,jdbcType=VARCHAR}, #{PHONE,jdbcType=VARCHAR},
+		#{PASSWORD,jdbcType=VARCHAR}, #{OPERATION_MANAGER,jdbcType=VARCHAR},
+		#{IDENTITY,jdbcType=VARCHAR},
+		#{DEL_FLAG,jdbcType=CHAR},
+		#{CREATED_DATE,jdbcType=TIMESTAMP}, #{CREATED_BY,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="org.jietou.api.m.BwUser">
+		insert into bw_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ROW_ID != null">
+				ROW_ID,
+			</if>
+			<if test="ACCOUNT != null">
+				ACCOUNT,
+			</if>
+			<if test="USER_NAME != null">
+				USER_NAME,
+			</if>
+			<if test="e_MAIL != null">
+				E_MAIL,
+			</if>
+			<if test="USER_ID != null">
+				USER_ID,
+			</if>
+			<if test="PHONE != null">
+				PHONE,
+			</if>
+			<if test="PASSWORD != null">
+				PASSWORD,
+			</if>
+			<if test="OPERATION_MANAGER != null">
+				OPERATION_MANAGER,
+			</if>
+			<if test="IDENTITY != null">
+				IDENTITY,
+			</if>
+			<if test="DEL_FLAG != null">
+				DEL_FLAG,
+			</if>
+			<if test="CREATED_DATE != null">
+				CREATED_DATE,
+			</if>
+			<if test="CREATED_BY != null">
+				CREATED_BY,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="ROW_ID != null">
+				#{ROW_ID,jdbcType=INTEGER},
+			</if>
+			<if test="ACCOUNT != null">
+				#{ACCOUNT,jdbcType=VARCHAR},
+			</if>
+			<if test="USER_NAME != null">
+				#{USER_NAME,jdbcType=VARCHAR},
+			</if>
+			<if test="e_MAIL != null">
+				#{e_MAIL,jdbcType=VARCHAR},
+			</if>
+			<if test="USER_ID != null">
+				#{USER_ID,jdbcType=VARCHAR},
+			</if>
+			<if test="PHONE != null">
+				#{PHONE,jdbcType=VARCHAR},
+			</if>
+			<if test="PASSWORD != null">
+				#{PASSWORD,jdbcType=VARCHAR},
+			</if>
+			<if test="OPERATION_MANAGER != null">
+				#{OPERATION_MANAGER,jdbcType=VARCHAR},
+			</if>
+			<if test="IDENTITY != null">
+				#{IDENTITY,jdbcType=VARCHAR},
+			</if>
+			<if test="DEL_FLAG != null">
+				#{DEL_FLAG,jdbcType=CHAR},
+			</if>
+			<if test="CREATED_DATE != null">
+				#{CREATED_DATE,jdbcType=TIMESTAMP},
+			</if>
+			<if test="CREATED_BY != null">
+				#{CREATED_BY,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="org.jietou.api.m.BwUser">
+		update bw_user
+		<set>
+			<if test="ACCOUNT != null">
+				ACCOUNT = #{ACCOUNT,jdbcType=VARCHAR},
+			</if>
+			<if test="USER_NAME != null">
+				USER_NAME = #{USER_NAME,jdbcType=VARCHAR},
+			</if>
+			<if test="e_MAIL != null">
+				E_MAIL = #{e_MAIL,jdbcType=VARCHAR},
+			</if>
+			<if test="USER_ID != null">
+				USER_ID = #{USER_ID,jdbcType=VARCHAR},
+			</if>
+			<if test="PHONE != null">
+				PHONE = #{PHONE,jdbcType=VARCHAR},
+			</if>
+			<if test="PASSWORD != null">
+				PASSWORD = #{PASSWORD,jdbcType=VARCHAR},
+			</if>
+			<if test="OPERATION_MANAGER != null">
+				OPERATION_MANAGER =
+				#{OPERATION_MANAGER,jdbcType=VARCHAR},
+			</if>
+			<if test="IDENTITY != null">
+				IDENTITY = #{IDENTITY,jdbcType=VARCHAR},
+			</if>
+			<if test="DEL_FLAG != null">
+				DEL_FLAG = #{DEL_FLAG,jdbcType=CHAR},
+			</if>
+			<if test="CREATED_DATE != null">
+				CREATED_DATE = #{CREATED_DATE,jdbcType=TIMESTAMP},
+			</if>
+			<if test="CREATED_BY != null">
+				CREATED_BY = #{CREATED_BY,jdbcType=INTEGER},
+			</if>
+		</set>
+		where ROW_ID = #{ROW_ID,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="org.jietou.api.m.BwUser">
+		update bw_user
+		set
+		ACCOUNT = #{ACCOUNT,jdbcType=VARCHAR},
+		USER_NAME =
+		#{USER_NAME,jdbcType=VARCHAR},
+		E_MAIL = #{e_MAIL,jdbcType=VARCHAR},
+		USER_ID = #{USER_ID,jdbcType=VARCHAR},
+		PHONE =
+		#{PHONE,jdbcType=VARCHAR},
+		PASSWORD = #{PASSWORD,jdbcType=VARCHAR},
+		OPERATION_MANAGER = #{OPERATION_MANAGER,jdbcType=VARCHAR},
+		IDENTITY =
+		#{IDENTITY,jdbcType=VARCHAR},
+		DEL_FLAG = #{DEL_FLAG,jdbcType=CHAR},
+		CREATED_DATE = #{CREATED_DATE,jdbcType=TIMESTAMP},
+		CREATED_BY =
+		#{CREATED_BY,jdbcType=INTEGER}
+		where ROW_ID =
+		#{ROW_ID,jdbcType=INTEGER}
+	</update>
+
+	<insert id="addUser" parameterType="org.jietou.api.m.BwUser">
+		insert into bw_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ROW_ID != null">
+				ROW_ID,
+			</if>
+			<if test="ACCOUNT != null">
+				ACCOUNT,
+			</if>
+			<if test="USER_NAME != null">
+				USER_NAME,
+			</if>
+			<if test="e_MAIL != null">
+				E_MAIL,
+			</if>
+			<if test="USER_ID != null">
+				USER_ID,
+			</if>
+			<if test="PHONE != null">
+				PHONE,
+			</if>
+			<if test="PASSWORD != null">
+				PASSWORD,
+			</if>
+			<if test="OPERATION_MANAGER != null">
+				OPERATION_MANAGER,
+			</if>
+			<if test="IDENTITY != null">
+				IDENTITY,
+			</if>
+			<if test="DEL_FLAG != null">
+				DEL_FLAG,
+			</if>
+			<if test="CREATED_DATE != null">
+				CREATED_DATE,
+			</if>
+			<if test="CREATED_BY != null">
+				CREATED_BY,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="ROW_ID != null">
+				#{ROW_ID,jdbcType=INTEGER},
+			</if>
+			<if test="ACCOUNT != null">
+				#{ACCOUNT,jdbcType=VARCHAR},
+			</if>
+			<if test="USER_NAME != null">
+				#{USER_NAME,jdbcType=VARCHAR},
+			</if>
+			<if test="e_MAIL != null">
+				#{e_MAIL,jdbcType=VARCHAR},
+			</if>
+			<if test="USER_ID != null">
+				#{USER_ID,jdbcType=VARCHAR},
+			</if>
+			<if test="PHONE != null">
+				#{PHONE,jdbcType=VARCHAR},
+			</if>
+			<if test="PASSWORD != null">
+				#{PASSWORD,jdbcType=VARCHAR},
+			</if>
+			<if test="OPERATION_MANAGER != null">
+				#{OPERATION_MANAGER,jdbcType=VARCHAR},
+			</if>
+			<if test="IDENTITY != null">
+				#{IDENTITY,jdbcType=VARCHAR},
+			</if>
+			<if test="DEL_FLAG != null">
+				#{DEL_FLAG,jdbcType=CHAR},
+			</if>
+			<if test="CREATED_DATE != null">
+				#{CREATED_DATE,jdbcType=TIMESTAMP},
+			</if>
+			<if test="CREATED_BY != null">
+				#{CREATED_BY,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+</mapper>
